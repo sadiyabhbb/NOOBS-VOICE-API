@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 const voicesDir = path.join(__dirname, 'voices');
 
 // ------------------------
-// Root page → Beautiful API Card UI
+// Root page → Professional & Responsive UI
 // ------------------------
 app.get('/', (req, res) => {
   // Get all voices for dynamic listing
@@ -19,21 +19,16 @@ app.get('/', (req, res) => {
     const name = f.replace(/\.(mp3|wav)$/, '');
     return `
       <div class="api-card">
-        <div class="endpoint-header">
-          <h3 class="endpoint-title">${name}</h3>
-        </div>
+        <h3 class="endpoint-title">${name}</h3>
         <p class="endpoint-description">Play the "${name}" voice file.</p>
         <div class="endpoint-method-info">
           <span class="method-tag get">GET</span>
           <span class="endpoint-path">/voice/${name}</span>
         </div>
-        <div class="test-section">
-          <h4 class="test-title">Test this Endpoint</h4>
-          <div class="query-params">
-            <span class="param-label">Direct Link</span>
-            <input type="text" class="url-input" value="/voice/${name}" readonly>
-          </div>
-        </div>
+        <audio controls style="width: 100%; margin-top: 10px;">
+          <source src="/voice/${name}" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
       </div>
     `;
   }).join('\n');
@@ -43,42 +38,66 @@ app.get('/', (req, res) => {
     <html>
     <head>
       <title>Voice API</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <style>
         body {
-          font-family: Arial, sans-serif;
-          background: #f0f0f0;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background: #f4f6f8;
+          margin: 0;
+          padding: 20px;
           text-align: center;
-          padding: 50px;
         }
-        h1 { color: #333; }
-        .container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        h1 { color: #1a1a1a; margin-bottom: 20px; }
+        .container {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 20px;
+        }
 
         /* API Card Styles */
         .api-card {
           background-color: #ffffff;
-          border-radius: 8px;
-          box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-          margin: 10px;
+          border-radius: 10px;
+          box-shadow: 0 6px 15px rgba(0,0,0,0.1);
           padding: 20px;
-          border-left: 5px solid #663399;
           width: 300px;
           text-align: left;
+          border-left: 6px solid #0070f3; /* professional blue border */
+          transition: transform 0.2s, box-shadow 0.2s;
         }
-        .endpoint-title { font-size: 1.2rem; font-weight: 600; margin-top: 0; margin-bottom: 5px; color: #333; }
-        .endpoint-description { font-size: 0.9rem; color: #666; margin-bottom: 10px; }
+        .api-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .endpoint-title { font-size: 1.25rem; font-weight: 600; margin-top: 0; margin-bottom: 5px; color: #111; }
+        .endpoint-description { font-size: 0.9rem; color: #555; margin-bottom: 10px; }
         .method-tag { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-right: 10px; }
-        .method-tag.get { background-color: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff; }
-        .endpoint-path { font-family: monospace; color: #555; font-size: 0.9rem; }
+        .method-tag.get { background-color: #e6f0ff; color: #0050b3; border: 1px solid #91caff; }
+        .endpoint-path { font-family: monospace; color: #333; font-size: 0.9rem; }
 
-        .test-section { margin-top: 15px; padding-top: 10px; border-top: 1px solid #eee; }
-        .test-title { font-size: 1rem; font-weight: 600; color: #333; margin-bottom: 8px; }
-        .param-label { display: block; font-size: 0.8rem; color: #777; margin-bottom: 5px; }
-        .url-input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9rem; margin-bottom: 10px; }
+        audio {
+          border-radius: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 650px) {
+          .api-card { width: 90%; }
+        }
       </style>
     </head>
     <body>
       <h1>🎙 Voice API</h1>
       <div class="container">
+        <div class="api-card">
+          <h3 class="endpoint-title">Get List of Voices</h3>
+          <p class="endpoint-description">Fetch all available voices in JSON format.</p>
+          <div class="endpoint-method-info">
+            <span class="method-tag get">GET</span>
+            <span class="endpoint-path">/list</span>
+          </div>
+          <a href="/list" target="_blank" style="margin-top:10px; display:inline-block; color:#fff; background:#0070f3; padding:8px 12px; border-radius:5px; text-decoration:none;">View JSON</a>
+        </div>
         ${voiceCards}
       </div>
     </body>
