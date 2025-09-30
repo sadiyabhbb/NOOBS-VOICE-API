@@ -9,6 +9,35 @@ const PORT = process.env.PORT || 3000;
 const voicesDir = path.join(__dirname, 'voices');
 
 // ------------------------
+// Root page → Simple HTML + CSS
+// ------------------------
+app.get('/', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Voice API</title>
+      <style>
+        body { font-family: Arial, sans-serif; background: #f0f0f0; text-align: center; padding: 50px; }
+        h1 { color: #333; }
+        a { display: inline-block; margin: 10px; padding: 10px 20px; background: #0070f3; color: white; text-decoration: none; border-radius: 5px; }
+        a:hover { background: #0051a2; }
+        .container { background: white; padding: 20px; border-radius: 10px; display: inline-block; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>🎙 Voice API</h1>
+        <p>Available Endpoints:</p>
+        <a href="/list">/list</a>
+        <a href="/voice/badol">/voice/badol</a>
+      </div>
+    </body>
+    </html>
+  `);
+});
+
+// ------------------------
 // GET /list → সব ভয়েস দেখাবে
 // ------------------------
 app.get('/list', (req, res) => {
@@ -25,11 +54,8 @@ app.get('/list', (req, res) => {
 // ------------------------
 app.get('/voice/:name', (req, res) => {
   const name = req.params.name;
-
-  // সম্ভাব্য এক্সটেনশন
   const extensions = ['.mp3', '.wav'];
 
-  // ফাইল খুঁজে বের করা
   let filePath = null;
   for (let ext of extensions) {
     const fullPath = path.join(voicesDir, name + ext);
