@@ -9,11 +9,15 @@ const PORT = process.env.PORT || 3000;
 const voicesDir = path.join(__dirname, 'voices');
 
 // ------------------------
-// Root page → Professional & Responsive UI
+// Root page → Show all voices dynamically
 // ------------------------
 app.get('/', (req, res) => {
-  // Get all voices for dynamic listing
-  const files = fs.readdirSync(voicesDir).filter(f => f.endsWith('.mp3') || f.endsWith('.wav'));
+  let files = [];
+  try {
+    files = fs.readdirSync(voicesDir).filter(f => f.endsWith('.mp3') || f.endsWith('.wav'));
+  } catch (err) {
+    console.error("Error reading voices folder:", err);
+  }
 
   const voiceCards = files.map(f => {
     const name = f.replace(/\.(mp3|wav)$/, '');
