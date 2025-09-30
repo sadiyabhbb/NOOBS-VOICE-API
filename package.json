@@ -1,0 +1,12 @@
+{
+  "name": "voice-api",
+  "version": "1.0.0",
+  "description": "Simple voice API using Express.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
